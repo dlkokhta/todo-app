@@ -33,10 +33,28 @@ function App() {
 
           <main>
             <div
-              className={`${classes["input-container"]} ${classes["white"]}`}
+              className={
+                !theme
+                  ? `${classes["input-container"]} ${classes["light"]}`
+                  : `${classes["input-container"]} ${classes["dark"]}`
+              }
             >
-              <div className={classes["check-box"]}></div>
-              <h1>Create a new todo...</h1>
+              <div
+                className={
+                  !theme
+                    ? `${classes["check-box"]} ${classes["check-box-light"]}`
+                    : `${classes["check-box"]} ${classes["check-box-dark"]}`
+                }
+              ></div>
+              <input
+                className={
+                  !theme
+                    ? `${classes["input-container-text"]} ${classes["input-container-text-light"]} `
+                    : `${classes["input-container-text"]} ${classes["input-container-text-dark"]} `
+                }
+                type="text"
+                placeholder="Create a new todo..."
+              />
             </div>
 
             <div className={classes["created-todo-container"]}>
@@ -47,17 +65,61 @@ function App() {
               <img className={classes["close-icon"]} src={closeIcon}></img>
             </div>
 
-            <div className={classes["info-created-container"]}>
-              <h1>5 items left</h1>
-              <h2>Clear Completed</h2>
+            <div
+              className={
+                !theme
+                  ? `${classes["info-created-container"]} ${classes["light"]} `
+                  : `${classes["info-created-container"]} ${classes["dark"]} `
+              }
+            >
+              <h1
+                className={
+                  !theme
+                    ? `${classes["info-created-container-light"]}`
+                    : `${classes["info-created-container-dark"]}`
+                }
+              >
+                5 items left
+              </h1>
+              <h2
+                className={
+                  !theme
+                    ? `${classes["info-created-container-light"]}`
+                    : `${classes["info-created-container-dark"]}`
+                }
+              >
+                Clear Completed
+              </h2>
             </div>
           </main>
 
           <footer>
-            <div className={classes["select-created-container"]}>
-              <div>All</div>
-              <div>Active</div>
-              <div>Completed</div>
+            <div
+              className={
+                !theme
+                  ? `${classes["select-created-container"]} ${classes["light"]} `
+                  : `${classes["select-created-container"]} ${classes["dark"]} `
+              }
+            >
+              <div className={classes["select-all"]}>All</div>
+              <div
+                className={
+                  !theme
+                    ? `${classes["select-active"]} ${classes["select-light"]}`
+                    : `${classes["select-active"]} ${classes["select-dark"]}`
+                }
+              >
+                Active
+              </div>
+              <div
+                className={
+                  !theme
+                    ? `${classes["select-completed"]} ${classes["select-light"]}`
+                    : `${classes["select-completed"]} ${classes["select-dark"]}`
+                }
+              >
+                Completed
+              </div>
             </div>
           </footer>
         </div>

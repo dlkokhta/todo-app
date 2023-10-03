@@ -12,15 +12,17 @@ body {
 .background {
   width: 100vw;
   height: 100vh;
-  background-color: #e3e4f1;
+
   background-repeat: no-repeat;
 }
 
 .mobile-light {
   background-image: url(./assets/images/bg-mobile-light.jpg);
+  background-color: #e3e4f1;
 }
 .mobile-dark {
   background-image: url(./assets/images/bg-mobile-dark.jpg);
+  background-color: #171823;
 }
 
 .container {
@@ -56,7 +58,7 @@ main {
 .dark {
   background-color: #25273d;
 }
-.white {
+.light {
   background-color: #ffffff;
 }
 
@@ -74,17 +76,31 @@ main {
 .check-box {
   width: 20px;
   height: 20px;
-  border: 1px solid #d1d2da;
   border-radius: 50%;
 }
 
-.input-container h1 {
+.check-box-light {
+  border: 1px solid #e3e9ea;
+}
+.check-box-dark {
+  border: 1px solid #393a4b;
+}
+
+.input-container-text {
   font-family: Josefin Sans;
   font-size: 12px;
   font-weight: 400;
   line-height: 12px;
   letter-spacing: -0.1666666716337204px;
   color: #9495a5;
+  border: none;
+}
+
+.input-container-text-light {
+  color: #9495a5;
+}
+.input-container-text-dark {
+  color: #767992;
 }
 
 .created-todo-container {
@@ -125,7 +141,6 @@ main {
 .info-created-container {
   display: flex;
   justify-content: space-between;
-  background-color: #ffffff;
   margin-bottom: 12px;
   padding: 16px 20px 20px 20px;
   border-bottom-left-radius: 5px;
@@ -147,10 +162,44 @@ main {
   line-height: 12px;
   letter-spacing: -0.1666666716337204px;
 }
+.info-created-container-light {
+  color: #9495a5;
+}
+.info-created-container-dark {
+  color: #5b5e7e;
+}
 
 .select-created-container {
   padding: 15px 80px;
   display: flex;
   justify-content: space-between;
-  background-color: #ffffff;
+}
+
+.select-all {
+  color: #3a7cfd;
+  font-family: Josefin Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+}
+.select-active {
+  font-family: Josefin Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+}
+
+.select-completed {
+  font-family: Josefin Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+}
+
+.select-light {
+  color: #9495a5;
+}
+
+.select-dark {
+  color: #5b5e7e;
 }
