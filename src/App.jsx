@@ -7,9 +7,21 @@ import { useState } from "react";
 
 function App() {
   const [theme, setTheme] = useState(false);
+  const [enteredInput, setEnteredInput] = useState("");
+  // const [inputClick, setInputClick] = useState("");
 
   const themeChangeHandler = () => {
     setTheme(!theme);
+  };
+
+  const inputChangeHandler = (event) => {
+    setEnteredInput(event.target.value);
+  };
+  const inputSubmissionHandler = (event) => {
+    event.preventDefault();
+    if (event. === "Enter") {
+      console.log(enteredInput);
+    }
   };
 
   return (
@@ -32,7 +44,8 @@ function App() {
           </header>
 
           <main>
-            <div
+            <form
+              onSubmit={inputSubmissionHandler}
               className={
                 !theme
                   ? `${classes["input-container"]} ${classes["light"]}`
@@ -53,9 +66,11 @@ function App() {
                     : `${classes["input-container-text"]} ${classes["input-container-text-dark"]} `
                 }
                 type="text"
-                placeholder="Create a new todo..."
-              />
-            </div>
+                placeholder=" Create a new todo..."
+                onChange={inputChangeHandler}
+                value={enteredInput}
+              ></input>
+            </form>
 
             <div className={classes["created-todo-container"]}>
               <div className={classes["created-todo-check-box"]}>
