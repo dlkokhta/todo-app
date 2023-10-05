@@ -72,16 +72,25 @@ main {
   padding: 14px 0px 14px 20px;
   margin-bottom: 16px;
 }
-
-.check-box {
+.input-check-box-unselected {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-}
-
-.check-box-light {
   border: 1px solid #e3e9ea;
 }
+
+.input-check-box-selected {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #d1d2da;
+  border-radius: 50%;
+  background: linear-gradient(130deg, #55ddff, #c058f3 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .check-box-dark {
   border: 1px solid #393a4b;
 }
@@ -110,13 +119,39 @@ main {
   width: 100%;
   height: 48px;
   background-color: #ffffff;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
+  margin-bottom: 1px;
+}
+
+.created-todo-container-text {
+  font-family: Josefin Sans;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+  color: #494c6b;
+}
+.created-todo-container-text-crossed-out {
+  text-decoration: line-through;
+}
+
+.created-todo-container-hide {
   display: none;
 }
+
+.created-todo-container-appear {
+  display: block;
+}
+
+.created-todo-container-dark {
+  background-color: #25273d;
+}
+
+/* .created-todo-container-light {
+  background-color: #ffffff;
+} */
 
 .created-todo-check-box {
   width: 20px;
@@ -130,6 +165,10 @@ main {
   justify-content: center;
 }
 
+/* .check-icon-hide {
+  display: none;
+} */
+
 .close-icon {
   margin-left: auto;
 }
@@ -141,13 +180,17 @@ main {
   line-height: 12px;
 }
 
+.middle-container {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
 .info-created-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+
   padding: 16px 20px 20px 20px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .info-created-container h1 {
@@ -155,7 +198,6 @@ main {
   font-size: 12px;
   font-weight: 400;
   line-height: 12px;
-  letter-spacing: -0.1666666716337204px;
 }
 
 .info-created-container h2 {

@@ -4,11 +4,15 @@ import sunIcon from "./assets/images/icon-sun.svg";
 import checkIcon from "./assets/images/icon-check.svg";
 import closeIcon from "./assets/images/icon-cross.svg";
 import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
   const [theme, setTheme] = useState(false);
   const [enteredInput, setEnteredInput] = useState("");
-  // const [inputClick, setInputClick] = useState("");
+  // const [totalInput, setTotalInput] = useState("");
+  // const [inputIsEntered, setInputIsEntered] = useState(false);
+  const [todos, setTodos] = useState([]);
+  const [inputIsMarker, setInputIsMarked] = useState(true);
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -17,11 +21,37 @@ function App() {
   const inputChangeHandler = (event) => {
     setEnteredInput(event.target.value);
   };
-  const inputSubmissionHandler = (event) => {
-    event.preventDefault();
-    if (event. === "Enter") {
-      console.log(enteredInput);
+  console.log("enteredInput", enteredInput);
+
+  const keyhandleDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      setTodos([
+        ...todos,
+        {
+          text: enteredInput,
+          isMarked: inputIsMarker,
+          id: Math.random(),
+        },
+      ]);
+      setEnteredInput("");
+
+      // return "";
     }
+  };
+
+  // const addTodo = () => {
+  //   {
+  //     setTodos([...todos, totalInput]);
+  //     setEnteredInput("");
+  //   }
+  // };
+
+  const inputCheckboxChangehandler = (id) => {
+    setInputIsMarked(!inputIsMarker);
+
+    //id -ით მოვძებნო და განვუახლო state_ი
   };
 
   return (
@@ -44,21 +74,34 @@ function App() {
           </header>
 
           <main>
-            <form
-              onSubmit={inputSubmissionHandler}
+            <div
               className={
                 !theme
                   ? `${classes["input-container"]} ${classes["light"]}`
                   : `${classes["input-container"]} ${classes["dark"]}`
               }
             >
-              <div
+              {/* <div
                 className={
                   !theme
                     ? `${classes["check-box"]} ${classes["check-box-light"]}`
                     : `${classes["check-box"]} ${classes["check-box-dark"]}`
                 }
-              ></div>
+                
+              ></div> */}
+
+              <div
+                className={
+                  inputIsMarker
+                    ? `${classes["input-check-box-unselected"]}`
+                    : `${classes["input-check-box-selected"]}`
+                }
+                onClick={inputCheckboxChangehandler}
+                value={inputIsMarker}
+              >
+                <img src={checkIcon}></img>
+              </div>
+
               <input
                 className={
                   !theme
@@ -68,43 +111,66 @@ function App() {
                 type="text"
                 placeholder=" Create a new todo..."
                 onChange={inputChangeHandler}
+                onKeyDown={keyhandleDown}
                 value={enteredInput}
               ></input>
-            </form>
-
-            <div className={classes["created-todo-container"]}>
-              <div className={classes["created-todo-check-box"]}>
-                <img src={checkIcon}></img>
-              </div>
-              <h1>created todo</h1>
-              <img className={classes["close-icon"]} src={closeIcon}></img>
             </div>
+            <div className={classes["middle-container"]}>
+              {todos.map((todo, index) => (
+                <div
+                  key={index}
+                  className={`${classes["created-todo-container"]} ${classes["created-todo-container-show"]}`}
+                >
+                  <div
+                    className={
+                      todo.isMarked
+                        ? `${classes["input-check-box-unselected"]}`
+                        : `${classes["input-check-box-selected"]}`
+                    }
+                    onClick={inputCheckboxChangehandler}
+                    value={todo.isMarked}
+                  >
+                    <img src={checkIcon}></img>
+                  </div>
+                  <h1
+                    className={
+                      todo.isMarked
+                        ? `${classes["created-todo-container-text"]}`
+                        : `${classes["created-todo-container-text-crossed-out"]}`
+                    }
+                  >
+                    {todo.text}
+                  </h1>
+                  <img className={classes["close-icon"]} src={closeIcon}></img>
+                </div>
+              ))}
 
-            <div
-              className={
-                !theme
-                  ? `${classes["info-created-container"]} ${classes["light"]} `
-                  : `${classes["info-created-container"]} ${classes["dark"]} `
-              }
-            >
-              <h1
+              <div
                 className={
                   !theme
-                    ? `${classes["info-created-container-light"]}`
-                    : `${classes["info-created-container-dark"]}`
+                    ? `${classes["info-created-container"]} ${classes["light"]} `
+                    : `${classes["info-created-container"]} ${classes["dark"]} `
                 }
               >
-                5 items left
-              </h1>
-              <h2
-                className={
-                  !theme
-                    ? `${classes["info-created-container-light"]}`
-                    : `${classes["info-created-container-dark"]}`
-                }
-              >
-                Clear Completed
-              </h2>
+                <h1
+                  className={
+                    !theme
+                      ? `${classes["info-created-container-light"]}`
+                      : `${classes["info-created-container-dark"]}`
+                  }
+                >
+                  5 items left
+                </h1>
+                <h2
+                  className={
+                    !theme
+                      ? `${classes["info-created-container-light"]}`
+                      : `${classes["info-created-container-dark"]}`
+                  }
+                >
+                  Clear Completed
+                </h2>
+              </div>
             </div>
           </main>
 
