@@ -44,20 +44,44 @@ function App() {
   };
   console.log("todos", todos);
 
+  //add item
   const inputCheckboxChangehandler1 = (id) => {
     const updatedTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, isMarked: !todo.isMarked } : todo
     );
     setTodos(updatedTodos);
     const test = todos.map((todo) => todo.id);
-    console.log("test", test);
-    // console.log("todos2", todos);
-    // console.log(id);
   };
-
+  //close each item
   const closeClickHandler = (id) => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
+  };
+  //clear Completed items
+  const clearCompleteChangeHandler = () => {
+    const updatedTodos = todos.filter((todo) => todo.isMarked);
+    setTodos(updatedTodos);
+  };
+
+  //Show All items
+  const showAllTodoHandler = () => {
+    const updatedTodos = todos.map((todo) => ({
+      ...todo,
+      isMarked: true,
+    }));
+    setTodos(updatedTodos);
+  };
+
+  //Mark Active items
+  const activeMarkHandler = () => {
+    const activeMarked = todos.filter((todo) => todo.isMarked);
+    setTodos([...activeMarked]);
+  };
+
+  //Completed
+  const completedMarkhandler = () => {
+    const completeMarked = todos.filter((todo) => !todo.isMarked);
+    setTodos([...completeMarked]);
   };
 
   return (
@@ -171,6 +195,9 @@ function App() {
                   5 items left
                 </h1>
                 <h2
+                  onClick={() => {
+                    clearCompleteChangeHandler();
+                  }}
                   className={
                     !theme
                       ? `${classes["info-created-container-light"]}`
@@ -191,8 +218,14 @@ function App() {
                   : `${classes["select-created-container"]} ${classes["dark"]} `
               }
             >
-              <div className={classes["select-all"]}>All</div>
               <div
+                onClick={showAllTodoHandler}
+                className={classes["select-all"]}
+              >
+                All
+              </div>
+              <div
+                onClick={activeMarkHandler}
                 className={
                   !theme
                     ? `${classes["select-active"]} ${classes["select-light"]}`
