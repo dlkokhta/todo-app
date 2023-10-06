@@ -12,7 +12,7 @@ function App() {
   // const [totalInput, setTotalInput] = useState("");
   // const [inputIsEntered, setInputIsEntered] = useState(false);
   const [todos, setTodos] = useState([]);
-  const [inputIsMarker, setInputIsMarked] = useState(true);
+  const [inputIsMarked, setInputIsMarked] = useState(true);
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -31,27 +31,33 @@ function App() {
         ...todos,
         {
           text: enteredInput,
-          isMarked: inputIsMarker,
+          isMarked: inputIsMarked,
           id: Math.random(),
         },
       ]);
       setEnteredInput("");
-
-      // return "";
     }
   };
 
-  // const addTodo = () => {
-  //   {
-  //     setTodos([...todos, totalInput]);
-  //     setEnteredInput("");
-  //   }
-  // };
+  const inputCheckboxChangehandler = () => {
+    setInputIsMarked(!inputIsMarked);
+  };
+  console.log("todos", todos);
 
-  const inputCheckboxChangehandler = (id) => {
-    setInputIsMarked(!inputIsMarker);
+  const inputCheckboxChangehandler1 = (id) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, isMarked: !todo.isMarked } : todo
+    );
+    setTodos(updatedTodos);
+    const test = todos.map((todo) => todo.id);
+    console.log("test", test);
+    // console.log("todos2", todos);
+    // console.log(id);
+  };
 
-    //id -ით მოვძებნო და განვუახლო state_ი
+  const closeClickHandler = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
   };
 
   return (
@@ -81,25 +87,21 @@ function App() {
                   : `${classes["input-container"]} ${classes["dark"]}`
               }
             >
-              {/* <div
-                className={
-                  !theme
-                    ? `${classes["check-box"]} ${classes["check-box-light"]}`
-                    : `${classes["check-box"]} ${classes["check-box-dark"]}`
-                }
-                
-              ></div> */}
-
               <div
                 className={
-                  inputIsMarker
+                  inputIsMarked
                     ? `${classes["input-check-box-unselected"]}`
                     : `${classes["input-check-box-selected"]}`
                 }
                 onClick={inputCheckboxChangehandler}
-                value={inputIsMarker}
+                value={inputIsMarked}
               >
-                <img src={checkIcon}></img>
+                <img
+                  className={
+                    inputIsMarked ? classes["input-check-box-img"] : ""
+                  }
+                  src={checkIcon}
+                ></img>
               </div>
 
               <input
@@ -115,6 +117,7 @@ function App() {
                 value={enteredInput}
               ></input>
             </div>
+            {/* created Todo */} {/* created Todo */} {/* created Todo */}{" "}
             <div className={classes["middle-container"]}>
               {todos.map((todo, index) => (
                 <div
@@ -127,7 +130,7 @@ function App() {
                         ? `${classes["input-check-box-unselected"]}`
                         : `${classes["input-check-box-selected"]}`
                     }
-                    onClick={inputCheckboxChangehandler}
+                    onClick={() => inputCheckboxChangehandler1(todo.id)}
                     value={todo.isMarked}
                   >
                     <img src={checkIcon}></img>
@@ -141,7 +144,13 @@ function App() {
                   >
                     {todo.text}
                   </h1>
-                  <img className={classes["close-icon"]} src={closeIcon}></img>
+                  <img
+                    onClick={() => {
+                      closeClickHandler(todo.id);
+                    }}
+                    className={classes["close-icon"]}
+                    src={closeIcon}
+                  ></img>
                 </div>
               ))}
 
