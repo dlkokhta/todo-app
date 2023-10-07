@@ -13,6 +13,7 @@ function App() {
   // const [inputIsEntered, setInputIsEntered] = useState(false);
   const [todos, setTodos] = useState([]);
   const [inputIsMarked, setInputIsMarked] = useState(true);
+  const [filter, setFilter] = useState("all");
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -65,24 +66,36 @@ function App() {
 
   //Show All items
   const showAllTodoHandler = () => {
-    const updatedTodos = todos.map((todo) => ({
-      ...todo,
-      isMarked: true,
-    }));
-    setTodos(updatedTodos);
+    setFilter("all");
   };
 
   //Mark Active items
   const activeMarkHandler = () => {
-    const activeMarked = todos.filter((todo) => todo.isMarked);
-    setTodos([...activeMarked]);
+    setFilter("active");
+    // const activeMarked = todos.filter((todo) => todo.isMarked);
+    // setTodos([...activeMarked]);
   };
 
   //Completed
   const completedMarkhandler = () => {
-    const completeMarked = todos.filter((todo) => !todo.isMarked);
-    setTodos([...completeMarked]);
+    setFilter("complete");
+    // const completeMarked = todos.filter((todo) => !todo.isMarked);
+    // setTodos([...completeMarked]);
   };
+
+  const filteredTodo = () => {
+    switch (filter) {
+      case "active":
+        return todos.filter((todo) => !todo.isMarked);
+      case "complete":
+        return todos.filter((todo) => todo.isMarked);
+      default:
+        return todos;
+    }
+  };
+
+  let unCompletedTodo = todos.filter((todo) => todo.isMarked);
+  let numberOfUnCompletedTodos = unCompletedTodo.length;
 
   return (
     <>
@@ -143,10 +156,14 @@ function App() {
             </div>
             {/* created Todo */} {/* created Todo */} {/* created Todo */}{" "}
             <div className={classes["middle-container"]}>
-              {todos.map((todo, index) => (
+              {filteredTodo().map((todo, index) => (
                 <div
                   key={index}
-                  className={`${classes["created-todo-container"]} ${classes["created-todo-container-show"]}`}
+                  className={
+                    !theme
+                      ? `${classes["created-todo-container"]} ${classes["created-todo-container-show"]} `
+                      : `${classes["created-todo-container"]} ${classes["created-todo-container-show"]}  ${classes["created-todo-container-dark"]}`
+                  }
                 >
                   <div
                     className={
@@ -157,7 +174,14 @@ function App() {
                     onClick={() => inputCheckboxChangehandler1(todo.id)}
                     value={todo.isMarked}
                   >
-                    <img src={checkIcon}></img>
+                    <img
+                      className={
+                        todo.isMarked
+                          ? `${classes["created-todo-checkIcon"]}`
+                          : ""
+                      }
+                      src={checkIcon}
+                    ></img>
                   </div>
                   <h1
                     className={
@@ -192,7 +216,7 @@ function App() {
                       : `${classes["info-created-container-dark"]}`
                   }
                 >
-                  5 items left
+                  {numberOfUnCompletedTodos} items left
                 </h1>
                 <h2
                   onClick={() => {
@@ -235,6 +259,7 @@ function App() {
                 Active
               </div>
               <div
+                onClick={completedMarkhandler}
                 className={
                   !theme
                     ? `${classes["select-completed"]} ${classes["select-light"]}`
