@@ -154,6 +154,11 @@ main {
   line-height: 12px;
   color: #494c6b;
 }
+
+.created-todo-container-text-dark {
+  color: #c8cbe7;
+}
+
 .created-todo-container-text-crossed-out {
   text-decoration: line-through;
   font-family: Josefin Sans;
@@ -161,6 +166,10 @@ main {
   font-weight: 400;
   line-height: 12px;
   color: #d1d2da;
+}
+
+.created-todo-container-text-crossed-out-dark {
+  color: #4d5067;
 }
 
 .created-todo-container-dark {
@@ -231,6 +240,9 @@ main {
   line-height: 12px;
   letter-spacing: -0.1666666716337204px;
 }
+footer h2 {
+  display: none;
+}
 .info-created-container-light {
   color: #9495a5;
 }
@@ -271,4 +283,84 @@ main {
 
 .select-dark {
   color: #5b5e7e;
+}
+
+.select-created-container h1 {
+  display: none;
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 80px 450px 115px 450px;
+  }
+
+  .mobile-light {
+    background-image: url(./assets/images/bg-desktop-light.jpg);
+    background-color: #e3e4f1;
+  }
+  .mobile-dark {
+    background-image: url(./assets/images/bg-desktop-dark.jpg);
+    background-color: #171823;
+  }
+
+  .info-created-container h2 {
+    display: none;
+  }
+  footer h2 {
+    display: block;
+    cursor: pointer;
+    margin-left: 56px;
+  }
+
+  .select-active:hover {
+    cursor: pointer;
+  }
+  .created-todo-container-text:hover {
+    cursor: pointer;
+  }
+
+  header {
+    margin-bottom: 55px;
+  }
+  .input-container {
+    height: 64px;
+    margin-bottom: 26px;
+  }
+  .input-check-box-unselected {
+    width: 24px;
+    height: 24px;
+  }
+  .input-check-box-selected {
+    width: 24px;
+    height: 24px;
+  }
+  .input-container-text {
+    font-size: 18px;
+  }
+
+  .created-todo-container {
+    height: 64px;
+  }
+
+  .created-todo-container h1 {
+    font-size: 18px;
+  }
+
+  .close-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .info-created-container {
+    display: none;
+  }
+
+  .select-created-container h1 {
+    display: block;
+    margin-right: 96px;
+  }
+
+  .select-created-container {
+    padding: 16px 24px 20px 16px;
+  }
 }

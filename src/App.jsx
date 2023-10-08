@@ -184,9 +184,14 @@ function App() {
                     ></img>
                   </div>
                   <h1
+                    // className={
+                    //   !theme
+                    //     ? `${classes["created-todo-container-text-dark"]}`
+                    //     : `${classes["created-todo-container-text-crossed-out-dark"]}`
+                    // }
                     className={
                       todo.isMarked
-                        ? `${classes["created-todo-container-text"]}`
+                        ? `${classes["created-todo-container-text"]} `
                         : `${classes["created-todo-container-text-crossed-out"]}`
                     }
                   >
@@ -242,6 +247,16 @@ function App() {
                   : `${classes["select-created-container"]} ${classes["dark"]} `
               }
             >
+              <h1
+                className={
+                  !theme
+                    ? `${classes["info-created-container-light"]} ${classes["select-active"]} `
+                    : `${classes["info-created-container-dark"]} ${classes["select-active"]} `
+                }
+              >
+                {numberOfUnCompletedTodos} items left
+              </h1>
+
               <div
                 onClick={showAllTodoHandler}
                 className={classes["select-all"]}
@@ -268,6 +283,19 @@ function App() {
               >
                 Completed
               </div>
+
+              <h2
+                onClick={() => {
+                  clearCompleteChangeHandler();
+                }}
+                className={
+                  !theme
+                    ? `${classes["select-completed"]} ${classes["info-created-container-light"]}`
+                    : `${classes["select-completed"]} ${classes["info-created-container-dark"]}`
+                }
+              >
+                Clear Completed
+              </h2>
             </div>
           </footer>
         </div>
