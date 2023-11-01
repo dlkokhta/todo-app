@@ -4,16 +4,14 @@ import sunIcon from "./assets/images/icon-sun.svg";
 import checkIcon from "./assets/images/icon-check.svg";
 import closeIcon from "./assets/images/icon-cross.svg";
 import { useState } from "react";
-import { useEffect } from "react";
 
 function App() {
   const [theme, setTheme] = useState(false);
   const [enteredInput, setEnteredInput] = useState("");
-  // const [totalInput, setTotalInput] = useState("");
-  // const [inputIsEntered, setInputIsEntered] = useState(false);
   const [todos, setTodos] = useState([]);
   const [inputIsMarked, setInputIsMarked] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [changeColor, setChangeColor] = useState("all");
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -62,16 +60,19 @@ function App() {
   const clearCompleteChangeHandler = () => {
     const updatedTodos = todos.filter((todo) => todo.isMarked);
     setTodos(updatedTodos);
+    setChangeColor("Clear Completed");
   };
 
   //Show All items
   const showAllTodoHandler = () => {
     setFilter("all");
+    setChangeColor("all");
   };
 
   //Mark Active items
   const activeMarkHandler = () => {
     setFilter("active");
+    setChangeColor("active");
     // const activeMarked = todos.filter((todo) => todo.isMarked);
     // setTodos([...activeMarked]);
   };
@@ -79,16 +80,15 @@ function App() {
   //Completed
   const completedMarkhandler = () => {
     setFilter("complete");
-    // const completeMarked = todos.filter((todo) => !todo.isMarked);
-    // setTodos([...completeMarked]);
+    setChangeColor("complete");
   };
 
   const filteredTodo = () => {
     switch (filter) {
       case "active":
-        return todos.filter((todo) => !todo.isMarked);
-      case "complete":
         return todos.filter((todo) => todo.isMarked);
+      case "complete":
+        return todos.filter((todo) => !todo.isMarked);
       default:
         return todos;
     }
@@ -154,7 +154,7 @@ function App() {
                 value={enteredInput}
               ></input>
             </div>
-            {/* created Todo */} {/* created Todo */} {/* created Todo */}{" "}
+            {/* created Todo */}
             <div className={classes["middle-container"]}>
               {filteredTodo().map((todo, index) => (
                 <div
@@ -184,11 +184,6 @@ function App() {
                     ></img>
                   </div>
                   <h1
-                    // className={
-                    //   !theme
-                    //     ? `${classes["created-todo-container-text-dark"]}`
-                    //     : `${classes["created-todo-container-text-crossed-out-dark"]}`
-                    // }
                     className={
                       todo.isMarked
                         ? `${classes["created-todo-container-text"]} `
@@ -250,7 +245,7 @@ function App() {
               <h1
                 className={
                   !theme
-                    ? `${classes["info-created-container-light"]} ${classes["select-active"]} `
+                    ? `${classes["info-created-container-light"]} ${classes["select-active"]}  `
                     : `${classes["info-created-container-dark"]} ${classes["select-active"]} `
                 }
               >
@@ -259,15 +254,22 @@ function App() {
 
               <div
                 onClick={showAllTodoHandler}
-                className={classes["select-all"]}
+                style={{ color: changeColor === "all" ? "#3a7cfd" : "" }}
+                className={
+                  !theme
+                    ? `${classes["select-active"]} ${classes["select-light"]} }`
+                    : `${classes["select-active"]} ${classes["select-dark"]}`
+                }
               >
                 All
               </div>
+
               <div
                 onClick={activeMarkHandler}
+                style={{ color: changeColor === "active" ? "#3a7cfd" : "" }}
                 className={
                   !theme
-                    ? `${classes["select-active"]} ${classes["select-light"]}`
+                    ? `${classes["select-active"]} ${classes["select-light"]} }`
                     : `${classes["select-active"]} ${classes["select-dark"]}`
                 }
               >
@@ -275,6 +277,7 @@ function App() {
               </div>
               <div
                 onClick={completedMarkhandler}
+                style={{ color: changeColor === "complete" ? "#3a7cfd" : "" }}
                 className={
                   !theme
                     ? `${classes["select-completed"]} ${classes["select-light"]}`
@@ -287,6 +290,9 @@ function App() {
               <h2
                 onClick={() => {
                   clearCompleteChangeHandler();
+                }}
+                style={{
+                  color: changeColor === "Clear Completed" ? "#3a7cfd" : "",
                 }}
                 className={
                   !theme

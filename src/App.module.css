@@ -18,10 +18,13 @@ body {
 
 .mobile-light {
   background-image: url(./assets/images/bg-mobile-light.jpg);
+  background-size: 100%;
   background-color: #e3e4f1;
 }
+
 .mobile-dark {
   background-image: url(./assets/images/bg-mobile-dark.jpg);
+  background-size: 100%;
   background-color: #171823;
 }
 
@@ -256,12 +259,16 @@ footer h2 {
   justify-content: space-between;
 }
 
-.select-all {
+.selected-blue {
   color: #3a7cfd;
+}
+
+.select-all {
   font-family: Josefin Sans;
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;
+  color: #8c8ea6;
 }
 .select-active {
   font-family: Josefin Sans;
@@ -270,6 +277,15 @@ footer h2 {
   line-height: 14px;
 }
 
+.select-completed {
+  font-family: Josefin Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+}
+.select-completed:hover {
+  cursor: pointer;
+}
 .select-completed {
   font-family: Josefin Sans;
   font-size: 14px;
@@ -289,11 +305,7 @@ footer h2 {
   display: none;
 }
 
-@media (min-width: 1440px) {
-  .container {
-    padding: 80px 450px 115px 450px;
-  }
-
+@media (min-width: 700px) {
   .mobile-light {
     background-image: url(./assets/images/bg-desktop-light.jpg);
     background-color: #e3e4f1;
@@ -301,6 +313,12 @@ footer h2 {
   .mobile-dark {
     background-image: url(./assets/images/bg-desktop-dark.jpg);
     background-color: #171823;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 80px 450px 115px 450px;
   }
 
   .info-created-container h2 {
@@ -316,6 +334,9 @@ footer h2 {
     cursor: pointer;
   }
   .created-todo-container-text:hover {
+    cursor: pointer;
+  }
+  select-completed:hover {
     cursor: pointer;
   }
 
