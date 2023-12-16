@@ -3,7 +3,8 @@ import moonIcon from "./assets/images/icon-moon.svg";
 import sunIcon from "./assets/images/icon-sun.svg";
 import checkIcon from "./assets/images/icon-check.svg";
 import closeIcon from "./assets/images/icon-cross.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
   const [theme, setTheme] = useState(false);
@@ -12,6 +13,9 @@ function App() {
   const [inputIsMarked, setInputIsMarked] = useState(true);
   const [filter, setFilter] = useState("all");
   const [changeColor, setChangeColor] = useState("all");
+  const [getReqTodo, setGetReqTodo] = useState([]);
+
+  console.log("enteredInput", enteredInput);
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -22,7 +26,7 @@ function App() {
   };
   console.log("enteredInput", enteredInput);
 
-  const keyhandleDown = (event) => {
+  const keyhandleDown = async (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
 
@@ -34,14 +38,23 @@ function App() {
           id: Math.random(),
         },
       ]);
+
       setEnteredInput("");
+      try {
+        const res = await axios.post("http://localhost:3000/api/send", {
+          title: enteredInput,
+          completed: inputIsMarked,
+        });
+        console.log(res);
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
     }
   };
 
   const inputCheckboxChangehandler = () => {
     setInputIsMarked(!inputIsMarked);
   };
-  console.log("todos", todos);
 
   //add item
   const inputCheckboxChangehandler1 = (id) => {
@@ -96,6 +109,14 @@ function App() {
 
   let unCompletedTodo = todos.filter((todo) => todo.isMarked);
   let numberOfUnCompletedTodos = unCompletedTodo.length;
+
+  useEffect(() => {
+    const getRequest = async () => {
+      const res = await axios.get("http://localhost:3000/api/todos");
+      setGetReqTodo(res.data);
+    };
+    getRequest();
+  }, []);
 
   return (
     <>
@@ -155,6 +176,11 @@ function App() {
               ></input>
             </div>
             {/* created Todo */}
+            {/* <div>
+              {getReqTodo.map((getTodo, index) => (
+                <div key={index}>{getTodo.isMarked}</div>
+              ))}
+            </div> */}
             <div className={classes["middle-container"]}>
               {filteredTodo().map((todo, index) => (
                 <div
