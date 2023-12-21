@@ -13,9 +13,9 @@ function App() {
   const [inputIsMarked, setInputIsMarked] = useState(true);
   const [filter, setFilter] = useState("all");
   const [changeColor, setChangeColor] = useState("all");
-  const [getReqTodo, setGetReqTodo] = useState([]);
 
-  console.log("enteredInput", enteredInput);
+  const todoId = todos.map((todo) => todo._id);
+  console.log("todoId", todoId);
 
   const themeChangeHandler = () => {
     setTheme(!theme);
@@ -24,28 +24,22 @@ function App() {
   const inputChangeHandler = (event) => {
     setEnteredInput(event.target.value);
   };
-  console.log("enteredInput", enteredInput);
 
   const keyhandleDown = async (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
 
-      setTodos([
-        ...todos,
-        {
-          text: enteredInput,
-          isMarked: inputIsMarked,
-          id: Math.random(),
-        },
-      ]);
-
       setEnteredInput("");
       try {
-        const res = await axios.post("http://localhost:3000/api/send", {
-          title: enteredInput,
-          completed: inputIsMarked,
-        });
-        console.log(res);
+        const res = await axios.post(
+          "https://todo-app-api-production-2c38.up.railway.app/api/send",
+          {
+            title: enteredInput,
+            completed: inputIsMarked,
+          }
+        );
+        getRequest();
+        // console.log("respose", res);
       } catch (error) {
         console.error("Error:", error.message);
       }
@@ -56,65 +50,68 @@ function App() {
     setInputIsMarked(!inputIsMarked);
   };
 
-  //add item
-  const inputCheckboxChangehandler1 = (id) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, isMarked: !todo.isMarked } : todo
-    );
-    setTodos(updatedTodos);
-    const test = todos.map((todo) => todo.id);
+  const toggleTodo = async (id) => {
+    try {
+      const response = await axios.put(
+        `https://todo-app-api-production-2c38.up.railway.app/api/${id}`
+      );
+      console.log("response", response.data);
+
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   //close each item
-  const closeClickHandler = (id) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
+  const closeClickHandler = async (id) => {
+    console.log("id close icon", id);
+    const response = await axios.delete(
+      `https://todo-app-api-production-2c38.up.railway.app/api/delete/${id}`
+    );
+    getRequest();
+    console.log("delete todo", response);
+    // const updatedTodos = todos.filter((todo) => todo.id !== id);
+    // setTodos(updatedTodos);
   };
   //clear Completed items
   const clearCompleteChangeHandler = () => {
-    const updatedTodos = todos.filter((todo) => todo.isMarked);
+    const updatedTodos = todos.filter((todo) => todo.completed);
     setTodos(updatedTodos);
     setChangeColor("Clear Completed");
   };
 
   //Show All items
   const showAllTodoHandler = () => {
-    setFilter("all");
     setChangeColor("all");
+    setTodos(todos);
+    // console.log("todos from all", todos);
   };
 
   //Mark Active items
   const activeMarkHandler = () => {
-    setFilter("active");
     setChangeColor("active");
-    // const activeMarked = todos.filter((todo) => todo.isMarked);
-    // setTodos([...activeMarked]);
+    const filteredTodo = todos.filter((todo) => todo.completed === false);
+    setTodos(filteredTodo);
   };
 
   //Completed
   const completedMarkhandler = () => {
-    setFilter("complete");
     setChangeColor("complete");
   };
 
-  const filteredTodo = () => {
-    switch (filter) {
-      case "active":
-        return todos.filter((todo) => todo.isMarked);
-      case "complete":
-        return todos.filter((todo) => !todo.isMarked);
-      default:
-        return todos;
-    }
+  const getRequest = async () => {
+    const req = await axios.get(
+      "https://todo-app-api-production-2c38.up.railway.app/api/todos"
+    );
+    setTodos(req.data);
   };
 
-  let unCompletedTodo = todos.filter((todo) => todo.isMarked);
-  let numberOfUnCompletedTodos = unCompletedTodo.length;
-
   useEffect(() => {
-    const getRequest = async () => {
-      const res = await axios.get("http://localhost:3000/api/todos");
-      setGetReqTodo(res.data);
-    };
     getRequest();
   }, []);
 
@@ -175,16 +172,11 @@ function App() {
                 value={enteredInput}
               ></input>
             </div>
-            {/* created Todo */}
-            {/* <div>
-              {getReqTodo.map((getTodo, index) => (
-                <div key={index}>{getTodo.isMarked}</div>
-              ))}
-            </div> */}
+
             <div className={classes["middle-container"]}>
-              {filteredTodo().map((todo, index) => (
+              {todos.map((todo) => (
                 <div
-                  key={index}
+                  key={todo._id}
                   className={
                     !theme
                       ? `${classes["created-todo-container"]} ${classes["created-todo-container-show"]} `
@@ -193,16 +185,16 @@ function App() {
                 >
                   <div
                     className={
-                      todo.isMarked
+                      todo.completed
                         ? `${classes["input-check-box-unselected"]}`
                         : `${classes["input-check-box-selected"]}`
                     }
-                    onClick={() => inputCheckboxChangehandler1(todo.id)}
-                    value={todo.isMarked}
+                    onClick={() => toggleTodo(todo._id)}
+                    // value={todo.completed}
                   >
                     <img
                       className={
-                        todo.isMarked
+                        todo.completed
                           ? `${classes["created-todo-checkIcon"]}`
                           : ""
                       }
@@ -211,16 +203,16 @@ function App() {
                   </div>
                   <h1
                     className={
-                      todo.isMarked
+                      todo.completed
                         ? `${classes["created-todo-container-text"]} `
                         : `${classes["created-todo-container-text-crossed-out"]}`
                     }
                   >
-                    {todo.text}
+                    {todo.title}
                   </h1>
                   <img
                     onClick={() => {
-                      closeClickHandler(todo.id);
+                      closeClickHandler(todo._id);
                     }}
                     className={classes["close-icon"]}
                     src={closeIcon}
@@ -241,9 +233,7 @@ function App() {
                       ? `${classes["info-created-container-light"]}`
                       : `${classes["info-created-container-dark"]}`
                   }
-                >
-                  {numberOfUnCompletedTodos} items left
-                </h1>
+                ></h1>
                 <h2
                   onClick={() => {
                     clearCompleteChangeHandler();
@@ -274,9 +264,7 @@ function App() {
                     ? `${classes["info-created-container-light"]} ${classes["select-active"]}  `
                     : `${classes["info-created-container-dark"]} ${classes["select-active"]} `
                 }
-              >
-                {numberOfUnCompletedTodos} items left
-              </h1>
+              ></h1>
 
               <div
                 onClick={showAllTodoHandler}
